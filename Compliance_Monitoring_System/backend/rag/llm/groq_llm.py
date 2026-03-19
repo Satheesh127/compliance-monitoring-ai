@@ -6,7 +6,8 @@ import os
 
 from langchain_groq import ChatGroq
 
-from backend.core.config import GROQ_MAX_TOKENS, GROQ_MODEL_NAME, GROQ_TEMPERATURE
+# ✅ FIXED IMPORT
+from core.config import GROQ_MAX_TOKENS, GROQ_MODEL_NAME, GROQ_TEMPERATURE
 
 
 def get_groq_llm(
