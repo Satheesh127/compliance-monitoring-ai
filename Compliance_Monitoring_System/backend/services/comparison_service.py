@@ -7,8 +7,9 @@ from typing import List
 
 from langchain_core.prompts import PromptTemplate
 
-from backend.models.models import ComparisonResult
-from backend.rag.llm.provider import get_chat_llm
+# ✅ FIXED IMPORTS
+from models.models import ComparisonResult
+from rag.llm.provider import get_chat_llm
 
 COMPARE_PROMPT = PromptTemplate(
     input_variables=["old_content", "new_content"],
@@ -62,12 +63,22 @@ class ComparisonService:
 
     def compare(self, old_content: str, new_content: str) -> ComparisonResult:
         response = self.llm.invoke(
-            COMPARE_PROMPT.format(old_content=old_content[:10000], new_content=new_content[:10000])
+            COMPARE_PROMPT.format(
+                old_content=old_content[:10000],
+                new_content=new_content[:10000]
+            )
         )
         text = response.content if isinstance(response.content, str) else str(response.content)
 
-        summary = _extract_field(r"Summary:\s*(.*?)\nRisk:", text, "Regulation updated with notable changes.")
+        summary = _extract_field(
+            r"Summary:\s*(.*?)\nRisk:",
+            text,
+            "Regulation updated with notable changes."
+        )
         risk = _normalize_risk(_extract_field(r"Risk:\s*(.*?)\n", text, "Medium"))
-        actions = _extract_actions(text) or ["Review updated regulation text", "Update internal controls"]
+        actions = _extract_actions(text) or [
+            "Review updated regulation text",
+            "Update internal controls"
+        ]
 
         return ComparisonResult(summary=summary, risk=risk, action=actions)
