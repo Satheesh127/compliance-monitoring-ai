@@ -10,17 +10,17 @@ from typing import List, Optional
 
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_openai import OpenAIEmbeddings  # ✅ CHANGED
 
-from backend.core.config import CHROMA_COLLECTION_NAME, CHROMA_PERSIST_DIR, EMBEDDING_MODEL_NAME
+from backend.core.config import CHROMA_COLLECTION_NAME, CHROMA_PERSIST_DIR
 
 logger = logging.getLogger(__name__)
 
 
+# ✅ Lightweight embeddings (no torch / transformers)
 @lru_cache(maxsize=1)
-def get_embeddings() -> HuggingFaceEmbeddings:
-    """Cache embeddings model to avoid repeated heavy initialization."""
-    return HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL_NAME)
+def get_embeddings() -> OpenAIEmbeddings:
+    return OpenAIEmbeddings()
 
 
 def get_vectorstore(
