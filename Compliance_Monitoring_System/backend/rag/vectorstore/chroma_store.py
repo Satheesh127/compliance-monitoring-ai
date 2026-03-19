@@ -10,9 +10,10 @@ from typing import List, Optional
 
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
-from langchain_openai import OpenAIEmbeddings  # ✅ CHANGED
+from langchain_openai import OpenAIEmbeddings  # ✅ lightweight
 
-from backend.core.config import CHROMA_COLLECTION_NAME, CHROMA_PERSIST_DIR
+# ✅ FIXED IMPORT
+from core.config import CHROMA_COLLECTION_NAME, CHROMA_PERSIST_DIR
 
 logger = logging.getLogger(__name__)
 
