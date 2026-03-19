@@ -6,7 +6,8 @@ import json
 from pathlib import Path
 from typing import List
 
-from backend.models.models import ComplianceUpdate
+# ✅ FIXED IMPORT
+from models.models import ComplianceUpdate
 
 
 class UpdateStore:
