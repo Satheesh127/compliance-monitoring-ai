@@ -5,11 +5,12 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from backend.core.config import UPDATES_FILE_PATH
-from backend.services.comparison_service import ComparisonService
-from backend.services.monitor_service import RegulationMonitor
-from backend.services.rag_update_service import UpdateRAGService
-from backend.services.update_store import UpdateStore
+# ✅ FIXED IMPORTS (removed 'backend.')
+from core.config import UPDATES_FILE_PATH
+from services.comparison_service import ComparisonService
+from services.monitor_service import RegulationMonitor
+from services.rag_update_service import UpdateRAGService
+from services.update_store import UpdateStore
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,7 @@ class _UnavailableRAGService:
     def is_empty(self) -> bool:
         return True
 
-    def index_update(self, update) -> None:  # noqa: D401
+    def index_update(self, update) -> None:
         # Keep monitoring flow alive even if vector indexing is temporarily unavailable.
         _ = update
 
@@ -30,7 +31,7 @@ class _UnavailableRAGService:
             "Summary: Chat service is temporarily unavailable.\n"
             "Risk: Unknown\n"
             "Action:\n"
-            "- Check internet/DNS access to huggingface.co\n"
+            "- Check internet/API connectivity\n"
             "- Restart backend after connectivity is restored\n"
             "Source: N/A"
         )
@@ -43,17 +44,23 @@ class ServiceRegistry:
         try:
             return UpdateRAGService()
         except Exception as exc:
-            logger.exception("RAG service initialization failed; running in degraded mode: %s", exc)
+            logger.exception(
+                "RAG service initialization failed; running in degraded mode: %s",
+                exc,
+            )
             return _UnavailableRAGService()
 
     def __init__(self) -> None:
         self.store = UpdateStore(Path(UPDATES_FILE_PATH))
         self.rag_service = self._init_rag()
 
+        # Re-index existing updates if vector store is empty
         if self.rag_service.is_empty():
             for update in self.store.list_updates():
                 self.rag_service.index_update(update)
+
         self.comparison_service = ComparisonService()
+
         self.monitor = RegulationMonitor(
             store=self.store,
             rag_service=self.rag_service,
