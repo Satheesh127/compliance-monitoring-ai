@@ -10,18 +10,21 @@ from typing import List, Optional
 
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
-from langchain_openai import OpenAIEmbeddings  # ✅ lightweight
 
-# ✅ FIXED IMPORT
+# ✅ FIX: Use FREE embeddings instead of OpenAI
+from langchain_huggingface import HuggingFaceEmbeddings
+
 from core.config import CHROMA_COLLECTION_NAME, CHROMA_PERSIST_DIR
 
 logger = logging.getLogger(__name__)
 
 
-# ✅ Lightweight embeddings (no torch / transformers)
+# ✅ FREE + NO API LIMIT
 @lru_cache(maxsize=1)
-def get_embeddings() -> OpenAIEmbeddings:
-    return OpenAIEmbeddings()
+def get_embeddings() -> HuggingFaceEmbeddings:
+    return HuggingFaceEmbeddings(
+        model_name="sentence-transformers/all-MiniLM-L6-v2"
+    )
 
 
 def get_vectorstore(
@@ -52,19 +55,28 @@ def index_documents(
         persist_directory=persist_directory,
         collection_name=collection_name,
     )
+
     vectorstore.add_documents(documents)
 
+    # Persist if available
     if hasattr(vectorstore, "persist"):
         vectorstore.persist()
 
-    logger.info("Indexed %s chunks into Chroma collection '%s'", len(documents), collection_name)
+    logger.info(
+        "Indexed %s chunks into Chroma collection '%s'",
+        len(documents),
+        collection_name,
+    )
+
     return vectorstore
 
 
 def reset_vectorstore(persist_directory: Optional[Path] = None) -> None:
     """Delete the persisted Chroma directory for a clean re-index."""
     persist_path = Path(persist_directory or CHROMA_PERSIST_DIR)
+
     if persist_path.exists():
         shutil.rmtree(persist_path)
         logger.info("Removed existing Chroma store at %s", persist_path)
+
     persist_path.mkdir(parents=True, exist_ok=True)
