@@ -10,7 +10,7 @@ from pathlib import Path
 
 import requests
 
-# ✅ FIXED IMPORTS
+# ✅ FIXED IMPORTS (no backend prefix)
 from core.config import MONITOR_INTERVAL_SECONDS, REGULATION_SNAPSHOT_PATH, REGULATION_URL
 from models.models import ComplianceUpdate
 from services.comparison_service import ComparisonService
@@ -49,10 +49,23 @@ class RegulationMonitor:
         self.snapshot_path.write_text(content, encoding="utf-8")
 
     def _fetch_content(self) -> str | None:
+        """Fetch content with browser-like headers to avoid 403 blocking."""
         try:
-            response = requests.get(self.regulation_url, timeout=20)
+            headers = {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                "Accept-Language": "en-US,en;q=0.9",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Connection": "keep-alive",
+            }
+
+            response = requests.get(
+                self.regulation_url,
+                headers=headers,
+                timeout=20,
+            )
             response.raise_for_status()
             return response.text
+
         except requests.RequestException as exc:
             logger.error("Failed to fetch regulation URL %s: %s", self.regulation_url, exc)
             return None
@@ -63,6 +76,7 @@ class RegulationMonitor:
         return " ".join(words[:8]).strip().rstrip(".") or "Regulation Update"
 
     async def run_forever(self) -> None:
+        """Continuously monitor for regulation updates."""
         while True:
             try:
                 await self.run_once()
@@ -72,31 +86,37 @@ class RegulationMonitor:
             await asyncio.sleep(self.interval_seconds)
 
     async def run_once(self) -> None:
+        """Single monitoring cycle."""
         if not self.regulation_url:
             logger.warning("REGULATION_URL is not configured; skipping monitoring cycle")
             return
 
         loop = asyncio.get_running_loop()
         new_content = await loop.run_in_executor(None, self._fetch_content)
+
         if new_content is None:
             return
 
+        # First run → just save snapshot
         if self.previous_content is None:
             self.previous_content = new_content
             self._save_previous_content(new_content)
             logger.info("Initial regulation snapshot saved")
             return
 
+        # No change detected
         if new_content.strip() == self.previous_content.strip():
             logger.debug("No regulation change detected")
             return
 
+        # Compare changes using LLM
         comparison = await loop.run_in_executor(
             None,
             self.comparison_service.compare,
             self.previous_content,
             new_content,
         )
+
         now = datetime.now(tz=timezone.utc)
 
         update = ComplianceUpdate(
@@ -108,8 +128,11 @@ class RegulationMonitor:
             timestamp=now,
         )
 
+        # Store + index
         self.store.add_update(update)
         await loop.run_in_executor(None, self.rag_service.index_update, update)
+
+        # Update snapshot
         self.previous_content = new_content
         self._save_previous_content(new_content)
 
