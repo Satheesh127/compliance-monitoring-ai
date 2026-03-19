@@ -1,5 +1,3 @@
-# LangChain-native URL RAG requirements
-
 # Core web and parsing
 requests>=2.31.0
 beautifulsoup4>=4.12.0
@@ -10,14 +8,13 @@ langchain>=0.3.0
 langchain-community>=0.3.0
 langchain-text-splitters>=0.3.0
 langchain-chroma>=0.2.0
-langchain-huggingface>=0.1.0
 langchain-groq>=0.2.0
 langchain-openai>=0.2.0
 
-# Vector store and embeddings backend
+# Vector store
 chromadb>=0.5.0
 
-# App and env
+# App
 fastapi>=0.115.0
 uvicorn>=0.30.0
 pydantic>=2.7.0
