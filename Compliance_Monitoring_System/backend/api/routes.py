@@ -6,9 +6,10 @@ import logging
 
 from fastapi import APIRouter, Depends
 
-from backend.models.models import ComplianceUpdate
-from backend.schemas.schemas import ChatRequest, ChatResponse, StatsResponse
-from backend.services.registry import ServiceRegistry
+# ✅ FIXED IMPORTS
+from models.models import ComplianceUpdate
+from schemas.schemas import ChatRequest, ChatResponse, StatsResponse
+from services.registry import ServiceRegistry
 
 router = APIRouter(prefix="/api", tags=["compliance"])
 logger = logging.getLogger(__name__)
