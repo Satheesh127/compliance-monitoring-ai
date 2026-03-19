@@ -10,11 +10,12 @@ from pathlib import Path
 
 import requests
 
-from backend.core.config import MONITOR_INTERVAL_SECONDS, REGULATION_SNAPSHOT_PATH, REGULATION_URL
-from backend.models.models import ComplianceUpdate
-from backend.services.comparison_service import ComparisonService
-from backend.services.rag_update_service import UpdateRAGService
-from backend.services.update_store import UpdateStore
+# ✅ FIXED IMPORTS
+from core.config import MONITOR_INTERVAL_SECONDS, REGULATION_SNAPSHOT_PATH, REGULATION_URL
+from models.models import ComplianceUpdate
+from services.comparison_service import ComparisonService
+from services.rag_update_service import UpdateRAGService
+from services.update_store import UpdateStore
 
 logger = logging.getLogger(__name__)
 
