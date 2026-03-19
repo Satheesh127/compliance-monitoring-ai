@@ -12,9 +12,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
-from backend.api.routes import router
-from backend.core.config import ALLOWED_ORIGINS, LOG_FORMAT, LOG_LEVEL
-from backend.services.registry import ServiceRegistry
+# ✅ FIXED IMPORTS
+from api.routes import router
+from core.config import ALLOWED_ORIGINS, LOG_FORMAT, LOG_LEVEL
+from services.registry import ServiceRegistry
 
 logging.basicConfig(level=getattr(logging, LOG_LEVEL), format=LOG_FORMAT)
 logger = logging.getLogger(__name__)
@@ -36,6 +37,7 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(title="Compliance Monitoring API", version="1.0.0", lifespan=lifespan)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
@@ -43,6 +45,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 app.include_router(router)
 
 
