@@ -7,7 +7,8 @@ import os
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_openai import ChatOpenAI
 
-from backend.core.config import (
+# ✅ FIXED IMPORTS
+from core.config import (
     GROQ_MAX_TOKENS,
     GROQ_MODEL_NAME,
     GROQ_TEMPERATURE,
@@ -15,7 +16,7 @@ from backend.core.config import (
     OPENAI_MODEL_NAME,
     OPENAI_TEMPERATURE,
 )
-from backend.rag.llm.groq_llm import get_groq_llm
+from rag.llm.groq_llm import get_groq_llm
 
 
 def get_chat_llm() -> BaseChatModel:
