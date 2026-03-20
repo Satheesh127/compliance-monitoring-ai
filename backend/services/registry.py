@@ -5,11 +5,11 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from backend.core.config import UPDATES_FILE_PATH
-from backend.services.comparison_service import ComparisonService
-from backend.services.monitor_service import RegulationMonitor
-from backend.services.rag_update_service import UpdateRAGService
-from backend.services.update_store import UpdateStore
+from core.config import UPDATES_FILE_PATH
+from services.comparison_service import ComparisonService
+from services.monitor_service import RegulationMonitor
+from services.rag_update_service import UpdateRAGService
+from services.update_store import UpdateStore
 
 logger = logging.getLogger(__name__)
 
