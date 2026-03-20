@@ -6,7 +6,8 @@ import logging
 import os
 from typing import Iterable, List
 
-from backend.core.config import REQUEST_TIMEOUT, USER_AGENT
+# ✅ FIXED IMPORT
+from core.config import REQUEST_TIMEOUT, USER_AGENT
 
 os.environ.setdefault("USER_AGENT", USER_AGENT)
 
@@ -59,6 +60,7 @@ def load_web_documents(urls: Iterable[str]) -> List[Document]:
 
             documents.extend(loaded_docs)
             logger.info("Loaded %s document(s) from %s", len(loaded_docs), url)
+
         except Exception as exc:
             logger.exception("Failed to load URL %s: %s", url, exc)
 
