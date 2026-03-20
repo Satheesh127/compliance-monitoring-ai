@@ -12,9 +12,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
-from backend.api.routes import router
-from backend.core.config import ALLOWED_ORIGINS, LOG_FORMAT, LOG_LEVEL
-from backend.services.registry import ServiceRegistry
+from api.routes import router
+from core.config import ALLOWED_ORIGINS, LOG_FORMAT, LOG_LEVEL
+from services.registry import ServiceRegistry
 
 logging.basicConfig(level=getattr(logging, LOG_LEVEL), format=LOG_FORMAT)
 logger = logging.getLogger(__name__)
