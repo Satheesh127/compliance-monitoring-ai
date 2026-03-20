@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from backend.core.config import MMR_LAMBDA_MULT, RETRIEVER_FETCH_K, RETRIEVER_K
+from core.config import MMR_LAMBDA_MULT, RETRIEVER_FETCH_K, RETRIEVER_K
 
 
 def build_retriever(
