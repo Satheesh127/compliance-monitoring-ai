@@ -15,7 +15,7 @@ from backend.core.config import (
     OPENAI_MODEL_NAME,
     OPENAI_TEMPERATURE,
 )
-from backend.rag.llm.groq_llm import get_groq_llm
+from rag.llm.groq_llm import get_groq_llm
 
 
 def get_chat_llm() -> BaseChatModel:
