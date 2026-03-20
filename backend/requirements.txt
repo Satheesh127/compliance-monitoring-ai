@@ -12,9 +12,7 @@ langchain-openai>=0.2.0
 
 # Vector store and embeddings backend
 chromadb>=0.5.0
-sentence-transformers>=2.2.2
-torch>=2.0.0
-transformers>=4.21.0
+
 
 # App and env
 fastapi>=0.115.0
