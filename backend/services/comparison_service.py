@@ -7,8 +7,8 @@ from typing import List
 
 from langchain_core.prompts import PromptTemplate
 
-from backend.models.models import ComparisonResult
-from backend.rag.llm.provider import get_chat_llm
+from models.models import ComparisonResult
+from rag.llm.provider import get_chat_llm
 
 COMPARE_PROMPT = PromptTemplate(
     input_variables=["old_content", "new_content"],
