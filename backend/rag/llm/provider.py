@@ -7,7 +7,7 @@ import os
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_openai import ChatOpenAI
 
-from backend.core.config import (
+from core.config import (
     GROQ_MAX_TOKENS,
     GROQ_MODEL_NAME,
     GROQ_TEMPERATURE,
