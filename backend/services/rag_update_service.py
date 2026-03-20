@@ -6,11 +6,11 @@ from langchain_classic.chains import RetrievalQA
 from langchain_core.documents import Document
 from langchain_core.prompts import PromptTemplate
 
-from backend.core.config import CHAT_TOP_K, FALLBACK_MESSAGE, UPDATES_COLLECTION_NAME
-from backend.models.models import ComplianceUpdate
-from backend.rag.llm.provider import get_chat_llm
-from backend.rag.retrieval.retriever import build_retriever
-from backend.rag.vectorstore.chroma_store import get_vectorstore
+from core.config import CHAT_TOP_K, FALLBACK_MESSAGE, UPDATES_COLLECTION_NAME
+from models.models import ComplianceUpdate
+from rag.llm.provider import get_chat_llm
+from rag.retrieval.retriever import build_retriever
+from rag.vectorstore.chroma_store import get_vectorstore
 
 UPDATE_CHAT_PROMPT = PromptTemplate(
     input_variables=["context", "question"],
