@@ -20,7 +20,7 @@ from datetime import datetime
 from urllib.parse import urlparse
 from typing import List, Optional
 
-from backend.core.config import FALLBACK_MESSAGE, MIN_STATEMENT_SUPPORT_RATIO
+from core.config import FALLBACK_MESSAGE, MIN_STATEMENT_SUPPORT_RATIO
 
 logger = logging.getLogger(__name__)
 
