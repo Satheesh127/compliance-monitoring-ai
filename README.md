@@ -138,3 +138,38 @@ npm run dev
    - `timestamp`
 6. Saves update to JSON and ChromaDB.
 7. Chatbot retrieves only from stored updates (`top_k=3`).
+
+ 
+## 🌐 Regulation Data Source (Custom Input) 
+
+To simulate real-world regulatory updates, we created and deployed a custom regulation website.
+
+* 🔗 GitHub Repository:
+  https://github.com/Santhosh221155/Rules_website_for_hackathon.git
+
+* 🌍 Live Website:
+  https://rules-website-for-hackathon.vercel.app/
+
+### Why this matters
+
+* Acts as a **live regulation feed**
+* Enables **real-time monitoring testing**
+* Simulates how government/legal websites publish updates
+* Helps demonstrate **end-to-end automation**
+
+### How it is used in this project
+
+* The backend continuously monitors this URL:
+
+  REGULATION_URL=https://rules-website-for-hackathon.vercel.app/
+
+* Every 15 seconds:
+
+  * Fetches content
+  * Detects changes
+  * Triggers AI-based comparison
+  * Stores structured updates
+
+👉 This makes the system behave like a **real-world compliance monitoring engine**
+
+---
